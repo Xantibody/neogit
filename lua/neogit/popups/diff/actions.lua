@@ -114,4 +114,34 @@ function M.commit(popup)
   end
 end
 
+-- External diff actions
+
+function M.ext_this(popup)
+  popup:close()
+
+  local external_diff = require("neogit.integrations.external_diff")
+  local section = popup:get_env("section")
+  local item = popup:get_env("item")
+
+  if section and section.name and item and item.name then
+    external_diff.open(section.name, item.name)
+  elseif section and section.name then
+    external_diff.open(section.name)
+  end
+end
+
+function M.ext_unstaged(popup)
+  popup:close()
+
+  local external_diff = require("neogit.integrations.external_diff")
+  external_diff.open("unstaged")
+end
+
+function M.ext_staged(popup)
+  popup:close()
+
+  local external_diff = require("neogit.integrations.external_diff")
+  external_diff.open("staged")
+end
+
 return M

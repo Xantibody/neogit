@@ -538,6 +538,11 @@ function M.get_default_values()
       item = { ">", "v" },
       section = { ">", "v" },
     },
+    external_diff = {
+      enabled = nil,
+      tool = "difftastic",
+      layout = "floating_console",
+    },
     integrations = {
       telescope = nil,
       diffview = nil,
@@ -1279,6 +1284,17 @@ function M.validate_config()
     end
 
     validate_integrations()
+    if validate_type(config.external_diff, "external_diff", "table") then
+      if
+        config.external_diff.enabled ~= nil
+        and type(config.external_diff.enabled) ~= "boolean"
+        and config.external_diff.enabled ~= "auto"
+      then
+        err("external_diff.enabled", "Expected `external_diff.enabled` to be nil, a boolean, or 'auto'")
+      end
+      validate_type(config.external_diff.tool, "external_diff.tool", { "string", "table" })
+      validate_kind(config.external_diff.layout, "external_diff.layout")
+    end
     validate_sections()
     validate_ignored_settings()
     validate_mappings()

@@ -8,6 +8,9 @@ function M.create(env)
   local diffview = config.check_integration("diffview")
   local commit_selected = (env.section and env.section.name == "log") and type(env.item.name) == "string"
 
+  local ext_diff = require("neogit.integrations.external_diff")
+  local ext_available = ext_diff.available()
+
   local p = popup
     .builder()
     :name("NeogitDiffPopup")
@@ -23,6 +26,10 @@ function M.create(env)
     :new_action_group("Show")
     :action_if(diffview, "c", "Commit", actions.commit)
     :action_if(diffview, "t", "Stash", actions.stash)
+    :new_action_group_if(ext_available, "External")
+    :action_if(ext_available and env.item, "D", "ext this", actions.ext_this)
+    :action_if(ext_available, "U", "ext unstaged", actions.ext_unstaged)
+    :action_if(ext_available, "S", "ext staged", actions.ext_staged)
     :env(env)
     :build()
 
