@@ -276,6 +276,15 @@ to Neovim users.
         item = { ">", "v" },
         section = { ">", "v" },
     },
+    -- External diff tool integration. Uses a terminal buffer to display
+    -- ANSI-colored diff output.
+    -- Supported tools: "difftastic" (via GIT_EXTERNAL_DIFF) and "delta"
+    -- (via GIT_PAGER). The tool must be installed and available in PATH.
+    external_diff = {
+        enabled = nil,                -- nil=disabled, true=enabled, "auto"=auto-detect
+        tool = "difftastic",          -- "difftastic" | "delta" | { custom table }
+        layout = "floating_console",  -- window kind for the terminal buffer
+    },
     -- Each Integration is auto-detected through plugin presence, however, it can be disabled by setting to `false`
     integrations = {
         -- If enabled, use telescope for menu selection rather than vim.ui.select.
@@ -1436,6 +1445,29 @@ https://github.com/sindrets/diffview.nvim.
 
   • Show stash                                               *neogit_show_stash*
     Display the diff of a specific stash.
+
+                                                      *neogit_diff_external*
+External Diff~
+
+When `external_diff.enabled` is set and the configured tool is installed,
+the diff popup shows an additional "External" action group:
+
+  • Ext this (D)                                        *neogit_diff_ext_this*
+    Show the diff for the item under cursor using the external diff tool.
+
+  • Ext unstaged (U)                                *neogit_diff_ext_unstaged*
+    Show unstaged changes using the external diff tool.
+
+  • Ext staged (S)                                    *neogit_diff_ext_staged*
+    Show staged changes using the external diff tool.
+
+Supported tools:
+  - `difftastic` (`difft`): Structural diff tool. Integrated via
+    `GIT_EXTERNAL_DIFF` environment variable.
+  - `delta`: Diff pager with syntax highlighting. Integrated via
+    `GIT_PAGER` environment variable.
+
+The output is displayed in a terminal buffer, preserving ANSI colors.
 
 
 ==============================================================================

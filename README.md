@@ -310,6 +310,14 @@ neogit.setup {
     item = { ">", "v" },
     section = { ">", "v" },
   },
+  -- External diff tool integration. Uses a terminal buffer to display ANSI-colored diff output.
+  -- Supported tools: "difftastic" (via GIT_EXTERNAL_DIFF) and "delta" (via GIT_PAGER).
+  -- The tool must be installed and available in PATH.
+  external_diff = {
+    enabled = nil,                -- nil=disabled, true=enabled, "auto"=auto-detect
+    tool = "difftastic",          -- "difftastic" | "delta" | { cmd = "...", mode = "...", ... }
+    layout = "floating_console",  -- window kind for the terminal buffer
+  },
   -- Each Integration is auto-detected through plugin presence, however, it can be disabled by setting to `false`
   integrations = {
     -- If enabled, use telescope for menu selection rather than vim.ui.select.
