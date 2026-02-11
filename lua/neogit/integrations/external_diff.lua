@@ -116,16 +116,14 @@ function M.open(section_name, item_name, opts)
     or section_name == "log"
     or (section_name and section_name:match("unmerged$"))
   then
-    git_subcmd = "show"
     if item_name then
       local commit = type(item_name) == "string" and item_name:match("[a-f0-9]+") or item_name
-      table.insert(extra_args, commit)
+      table.insert(extra_args, commit .. "^.." .. commit)
     end
   elseif section_name == "range" and item_name then
     table.insert(extra_args, item_name)
   elseif (section_name == "stashes" or section_name == "commit") and item_name then
-    git_subcmd = "show"
-    table.insert(extra_args, item_name)
+    table.insert(extra_args, item_name .. "^.." .. item_name)
   end
 
   local env, flags = build_cmd_parts(tool, git_subcmd, width)
